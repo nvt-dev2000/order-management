@@ -1,0 +1,23 @@
+{
+  "required": "This field is required.",
+  "emailInvalid": "Invalid email address.",
+  "passwordMin": "Password must be at least 6 characters.",
+  "numberInvalid": "Please enter a valid number.",
+  "inputInvalid": "Invalid input.",
+  "customerNameRequired": "Customer name is required",
+  "totalAmountMin": "Total amount must be >= 0",
+  "itemsCountInt": "Item count must be a whole number",
+  "itemsCountMin": "Minimum 1 item",
+  "skuRequired": "SKU is required",
+  "productNameRequired": "Product name is required",
+  "priceMin": "Price must be >= 0",
+  "stockInt": "Stock must be a whole number",
+  "stockMin": "Stock must be >= 0",
+  "productRequired": "Select a product",
+  "quantityInt": "Quantity must be a whole number",
+  "quantityMin": "Minimum quantity is 1",
+  "orderItemsMin": "Add at least one product to the order",
+  "orderRequired": "Select an order",
+  "returnReasonRequired": "Return reason is required",
+  "returnItemsMin": "Select at least one item to return"
+}

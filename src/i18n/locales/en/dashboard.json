@@ -1,0 +1,10 @@
+{
+  "title": "Dashboard",
+  "description": "Orders and revenue overview",
+  "pageTitle": "Dashboard",
+  "totalOrders": "Total orders",
+  "pendingOrders": "Pending orders",
+  "revenue": "Revenue",
+  "customers": "Customers",
+  "loadError": "Failed to load stats. Check the API backend."
+}

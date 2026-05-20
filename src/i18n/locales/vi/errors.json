@@ -1,0 +1,14 @@
+{
+  "forbidden": "Bạn không có quyền thực hiện hành động này.",
+  "unauthorized": "Phiên đăng nhập không hợp lệ.",
+  "token_invalid": "Token không hợp lệ.",
+  "token_expired": "Phiên đăng nhập đã hết hạn.",
+  "invalid_params": "Dữ liệu gửi lên không hợp lệ.",
+  "record_not_found": "Không tìm thấy dữ liệu.",
+  "email_already_exists": "Email đã được sử dụng.",
+  "internal_server_error": "Lỗi hệ thống. Vui lòng thử lại sau.",
+  "rate_limit": "Quá nhiều yêu cầu. Vui lòng thử lại sau.",
+  "sessionExpired": "Phiên đăng nhập đã hết hạn",
+  "forbiddenAction": "Bạn không có quyền thực hiện hành động này",
+  "serverError": "Máy chủ gặp sự cố, vui lòng thử lại sau"
+}

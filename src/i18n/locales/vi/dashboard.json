@@ -1,0 +1,10 @@
+{
+  "title": "Dashboard",
+  "description": "Tổng quan đơn hàng và doanh thu",
+  "pageTitle": "Dashboard",
+  "totalOrders": "Tổng đơn hàng",
+  "pendingOrders": "Đơn chờ xử lý",
+  "revenue": "Doanh thu",
+  "customers": "Khách hàng",
+  "loadError": "Không tải được thống kê. Kiểm tra API backend."
+}

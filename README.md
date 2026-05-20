@@ -1,87 +1,182 @@
-# Welcome to React Router!
+# Order Management
 
-A modern, production-ready template for building full-stack React applications using React Router.
+Ứng dụng quản lý đơn hàng — React Router 7 SPA + TypeScript + shadcn/ui.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Tech stack
 
-## Features
+- **Framework**: React 19, React Router 7 (SPA, `ssr: false`)
+- **Build**: Vite 8
+- **State server**: TanStack Query v5 (+ devtools)
+- **State client**: Zustand (auth, UI sidebar)
+- **HTTP**: Axios + interceptors (token, error handler)
+- **Form**: react-hook-form + Zod (schema-first)
+- **UI**: shadcn/ui + Tailwind CSS 4 + Lucide
+- **Notifications**: Sonner
+- **i18n**: i18next + react-i18next (vi / en)
+- **DX**: ESLint, Prettier, Husky + lint-staged, pnpm
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## Cấu trúc thư mục
 
-## Getting Started
+Kiến trúc tách layer theo concern, domain mirror qua nhiều folder.
 
-### Installation
+```text
+src/
+├── root.tsx, routes.ts, app.css
+│
+├── pages/                      # Page components (tương ứng routes)
+│   ├── dashboard.tsx
+│   ├── login/index.tsx
+│   ├── history/index.tsx
+│   ├── orders/{index, new, order-detail, order-edit}.tsx
+│   ├── products/...
+│   └── returns/...
+│
+├── components/
+│   ├── features/               # UI nghiệp vụ theo domain
+│   │   ├── auth/               # login-form, require-auth
+│   │   ├── orders/             # order-table, order-form, order-filters...
+│   │   └── dashboard/          # stats-cards
+│   ├── common/                 # page-header, loading-spinner, empty-state
+│   ├── ui/                     # shadcn primitives
+│   ├── layouts/                # auth-layout, locale-layout; main/{layout,sidebar,header,footer}
+│   └── providers/              # AppProviders, queryClient
+│
+├── services/                   # API layer (tương đương services/ citygas)
+│   ├── client.ts               # Axios instance + interceptors
+│   ├── auth/auth.api.ts
+│   ├── orders/orders.api.ts
+│   └── dashboard/dashboard.api.ts
+│
+├── hooks/                      # Custom hooks theo domain
+│   ├── use-debounce.ts
+│   ├── auth/{use-login, use-logout}.ts
+│   ├── orders/{use-orders, use-order, use-order-mutations, use-order-list-params}.ts
+│   └── dashboard/use-dashboard-stats.ts
+│
+├── schemas/                    # Zod validation
+│   ├── auth/login.schema.ts
+│   └── orders/order.schema.ts
+│
+├── types/                      # TypeScript types
+│   ├── api.ts
+│   ├── auth/auth.types.ts
+│   ├── orders/order.types.ts
+│   └── dashboard/dashboard.types.ts
+│
+├── constants/                  # Hằng số tập trung
+│   ├── index.ts                # barrel
+│   ├── api.ts                  # API_ENDPOINTS
+│   ├── routes.ts               # buildRoutes(locale)
+│   ├── query-keys.ts           # orderKeys, dashboardKeys
+│   ├── order-status.ts
+│   ├── pagination.ts, debounce.ts, query.ts, storage.ts
+│
+├── i18n/                       # Đa ngôn ngữ (vi / en)
+│   ├── index.ts                # init i18next
+│   ├── config.ts               # DEFAULT_LOCALE, SUPPORTED_LOCALES
+│   ├── locales/{vi,en}/*.json  # common, auth, orders, dashboard, errors, validation
+│   └── meta.ts                 # pageTitle() cho route meta
+│
+├── stores/                     # Zustand (auth, UI sidebar + locale)
+├── config/                     # env.ts
+├── lib/                        # cn() utility
+└── utils/                      # formatCurrency, formatDate...
+```
 
-Install the dependencies:
+### Quy ước
+
+- **Routing mỏng**: `routes.ts` khai báo URL → `pages/` chứa page component.
+- **Locale trong URL**: `/vi`, `/en`, `/vi/orders`… — đổi ngôn ngữ đổi luôn segment trên router.
+- **Domain mirror**: cùng tên folder qua `components/features/`, `hooks/`, `services/`, `schemas/`, `types/`.
+- **Shared UI 3 tầng**: `ui/` → `common/` → `components/features/`.
+- **Constants tập trung**: routes, API endpoints, query keys, pagination ở `constants/`.
+- **Import trực tiếp** theo layer — không dùng barrel feature ở root.
+
+### Đa ngôn ngữ (i18n)
+
+- Ngôn ngữ mặc định: **vi**; hỗ trợ **en**.
+- Locale lưu trong Zustand `ui-storage` (cùng sidebar).
+- Nút đổi ngôn ngữ: header app + trang login (`LanguageSwitcher`).
+- Trong component: `useTranslation('orders')` → `t('title')`.
+- Ngoài React (axios, query client): `import { t } from '@/utils/i18n'`.
+- Zod schema: factory `createLoginSchema(i18n.getFixedT(null, 'validation'))` — cập nhật khi đổi locale.
+- **Comment trong code**: tiếng Anh. **Chuỗi UI**: file JSON `src/i18n/locales/`.
+
+## Yêu cầu
+
+- Node.js >= 20
+- pnpm 10.x (project pin qua `packageManager`)
+
+## Bắt đầu
 
 ```bash
-npm install
+cp .env.example .env
+pnpm install
+pnpm dev
 ```
 
-### Development
+Truy cập http://localhost:5173.
 
-Start the development server with HMR:
+## Scripts
+
+| Lệnh                | Mô tả                             |
+| ------------------- | --------------------------------- |
+| `pnpm dev`          | Dev server                        |
+| `pnpm build`        | Build production (SPA)            |
+| `pnpm start`        | Serve bản build                   |
+| `pnpm typecheck`    | React Router typegen + tsc        |
+| `pnpm lint`         | ESLint                            |
+| `pnpm lint:fix`     | ESLint --fix                      |
+| `pnpm format`       | Prettier --write toàn project     |
+| `pnpm format:check` | Kiểm tra format (CI / pre-commit) |
+| `pnpm check`        | typecheck + lint + format:check   |
+| `pnpm check:fix`    | format + eslint --fix             |
+
+## Format code
+
+- **Prettier** (`.prettierrc`): `printWidth: 80`, `semi: true`, `trailingComma: "all"`, plugin **Tailwind** sắp xếp class.
+- **ESLint** (`eslint.config.js`): TypeScript + React Hooks; `eslint-config-prettier` tắt rule trùng Prettier.
+- **EditorConfig** (`.editorconfig`): indent 2 spaces, LF, UTF-8.
+- **VS Code / Cursor**: mở folder → cài extension gợi ý (`.vscode/extensions.json`) → **Format on Save** đã bật trong `.vscode/settings.json`.
+- **Husky pre-commit**: `lint-staged` chạy `eslint --fix` + `prettier --write` trên file staged.
 
 ```bash
-npm run dev
+# Sửa format + lint một lần
+pnpm check:fix
+
+# Kiểm tra trước khi push (giống CI)
+pnpm check
 ```
 
-Your application will be available at `http://localhost:5173`.
+## Biến môi trường
 
-## Building for Production
+| Biến            | Bắt buộc | Mặc định                    | Mô tả                                          |
+| --------------- | -------- | --------------------------- | ---------------------------------------------- |
+| `VITE_API_URL`  | Có       | `http://localhost:3000/api` | Base URL API backend                           |
+| `VITE_USE_MOCK` | Không    | `false`                     | Bật mock toàn bộ API (auth, orders, dashboard) |
 
-Create a production build:
+Khi `VITE_USE_MOCK=true`, app **không gọi backend** — dữ liệu in-memory trong `src/services/mock/`.
 
-```bash
-npm run build
+## Backend contract (rút gọn)
+
+| Nhóm      | Endpoint                                                   |
+| --------- | ---------------------------------------------------------- |
+| Auth      | `POST /auth/login`, `GET /auth/me`, `POST /auth/logout`    |
+| Orders    | CRUD `/orders` + query `page`, `limit`, `search`, `status` |
+| Dashboard | `GET /dashboard/stats`                                     |
+
+Response shape:
+
+```ts
+// Single
+{ data: T; message?: string }
+
+// Paginated
+{ data: T[]; meta: { page; limit; total; totalPages } }
 ```
 
-## Deployment
+## Lưu ý production
 
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+1. Token JWT đang lưu trong `localStorage` qua Zustand `persist`. Với app nội bộ là chấp nhận được; nếu cần chống XSS cao hãy chuyển sang httpOnly cookie + refresh token.
+2. Đảm bảo backend đã sẵn các endpoint trong contract.
+3. App là SPA (`ssr: false`) — cấu hình host static với fallback `index.html` cho client routing.

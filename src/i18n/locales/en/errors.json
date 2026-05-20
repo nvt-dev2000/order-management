@@ -1,0 +1,14 @@
+{
+  "forbidden": "You do not have permission to perform this action.",
+  "unauthorized": "Invalid session.",
+  "token_invalid": "Invalid token.",
+  "token_expired": "Your session has expired.",
+  "invalid_params": "Invalid request data.",
+  "record_not_found": "Record not found.",
+  "email_already_exists": "Email is already in use.",
+  "internal_server_error": "System error. Please try again later.",
+  "rate_limit": "Too many requests. Please try again later.",
+  "sessionExpired": "Your session has expired",
+  "forbiddenAction": "You do not have permission to perform this action",
+  "serverError": "Server error. Please try again later"
+}

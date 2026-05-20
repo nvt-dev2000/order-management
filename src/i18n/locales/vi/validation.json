@@ -1,0 +1,23 @@
+{
+  "required": "Trường này là bắt buộc.",
+  "emailInvalid": "Email không hợp lệ.",
+  "passwordMin": "Mật khẩu tối thiểu 6 ký tự.",
+  "numberInvalid": "Vui lòng nhập số hợp lệ.",
+  "inputInvalid": "Dữ liệu nhập không hợp lệ.",
+  "customerNameRequired": "Tên khách hàng là bắt buộc",
+  "totalAmountMin": "Tổng tiền phải >= 0",
+  "itemsCountInt": "Số sản phẩm phải là số nguyên",
+  "itemsCountMin": "Số sản phẩm tối thiểu 1",
+  "skuRequired": "SKU là bắt buộc",
+  "productNameRequired": "Tên sản phẩm là bắt buộc",
+  "priceMin": "Giá phải >= 0",
+  "stockInt": "Tồn kho phải là số nguyên",
+  "stockMin": "Tồn kho phải >= 0",
+  "productRequired": "Chọn sản phẩm",
+  "quantityInt": "Số lượng phải là số nguyên",
+  "quantityMin": "Số lượng tối thiểu 1",
+  "orderItemsMin": "Thêm ít nhất một sản phẩm vào đơn",
+  "orderRequired": "Chọn đơn hàng",
+  "returnReasonRequired": "Lý do đổi trả là bắt buộc",
+  "returnItemsMin": "Chọn ít nhất một sản phẩm hoàn"
+}
